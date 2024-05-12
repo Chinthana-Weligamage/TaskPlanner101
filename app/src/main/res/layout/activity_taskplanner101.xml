@@ -1,41 +1,102 @@
-<!-- res/layout/activity_main.xml -->
-
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
     tools:context=".TaskPlanner101">
+
+    <!-- Task Title -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Task Title"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_marginBottom="8dp"/>
 
     <EditText
         android:id="@+id/editTextTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Task Title" />
+        android:hint="Enter task title"
+        android:inputType="text"/>
+
+    <!-- Task Description -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Task Description"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"/>
 
     <EditText
         android:id="@+id/editTextDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Task Description" />
+        android:hint="Enter task description"
+        android:inputType="textMultiLine"
+        android:minLines="3"
+        android:gravity="top"/>
 
-    <EditText
-        android:id="@+id/editTextDeadline"
+    <!-- Task Deadline -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Task Deadline"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"/>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Task Deadline" />
+        android:orientation="horizontal">
 
+        <EditText
+            android:id="@+id/editTextDeadline"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:hint="Select task deadline"
+            android:inputType="none"
+            android:clickable="false"
+            android:focusable="false"/>
+
+        <Button
+            android:id="@+id/buttonDatePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pick Date"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#007bff"/>
+    </LinearLayout>
+
+    <!-- Add Task Button -->
     <Button
         android:id="@+id/buttonAddTask"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Task" />
+        android:text="Add Task"
+        android:layout_marginTop="24dp"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#007bff"/>
 
+    <!-- Show Tasks Button -->
     <Button
         android:id="@+id/buttonShowTasks"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Show Tasks" />
+        android:text="Show Tasks"
+        android:layout_marginTop="8dp"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#28a745"/>
 
 </LinearLayout>

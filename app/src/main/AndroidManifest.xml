@@ -13,6 +13,12 @@
         android:theme="@style/Theme.TaskPlanner101"
         tools:targetApi="34">
         <activity
+            android:name=".TaskListAdapter"
+            android:exported="false" />
+        <activity
+            android:name=".ShowTasksActivity"
+            android:exported="false" />
+        <activity
             android:name=".TaskPlanner101"
             android:exported="true">
             <intent-filter>
