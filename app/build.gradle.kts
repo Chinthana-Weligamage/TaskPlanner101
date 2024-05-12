@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "lk.cw.taskplanner101"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "lk.cw.taskplanner101"
@@ -44,4 +44,6 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation("org.xerial:sqlite-jdbc:3.34.0")
+
 }
