@@ -51,4 +51,20 @@ class TaskDatabaseHelper(context: Context) :
         return deletedRows
     }
 
+    fun updateTaskDescription(taskId: Long, newDescription: String): Int {
+        val db = this.writableDatabase
+
+        val values = ContentValues().apply {
+            put(COLUMN_DESCRIPTION, newDescription)
+        }
+
+        val selection = "$COLUMN_ID = ?"
+        val selectionArgs = arrayOf(taskId.toString())
+
+        val count = db.update(TABLE_NAME, values, selection, selectionArgs)
+        db.close()
+
+        return count
+    }
+
 }

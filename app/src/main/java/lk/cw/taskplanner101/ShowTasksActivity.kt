@@ -22,8 +22,10 @@ class ShowTasksActivity : AppCompatActivity() {
         val tasks = retrieveTasksFromDatabase()
 
         // Display tasks in the ListView using custom adapter
-        val adapter = TaskListAdapter(this, tasks)
+        val dbHelper = TaskDatabaseHelper(this)
+        val adapter = TaskListAdapter(this, dbHelper, tasks.toMutableList())
         listViewTasks.adapter = adapter
+
 
         val fabAddTask: FloatingActionButton = findViewById(R.id.fabAddTask)
         fabAddTask.setOnClickListener {
@@ -42,6 +44,7 @@ class ShowTasksActivity : AppCompatActivity() {
         val cursor = db.query(
             TaskDatabaseHelper.TABLE_NAME,
             arrayOf(
+                TaskDatabaseHelper.COLUMN_ID, // Include ID in the projection
                 TaskDatabaseHelper.COLUMN_TITLE,
                 TaskDatabaseHelper.COLUMN_DESCRIPTION,
                 TaskDatabaseHelper.COLUMN_DEADLINE
@@ -54,10 +57,11 @@ class ShowTasksActivity : AppCompatActivity() {
         )
 
         while (cursor.moveToNext()) {
+            val id = cursor.getLong(cursor.getColumnIndex(TaskDatabaseHelper.COLUMN_ID))
             val title = cursor.getString(cursor.getColumnIndex(TaskDatabaseHelper.COLUMN_TITLE))
             val description = cursor.getString(cursor.getColumnIndex(TaskDatabaseHelper.COLUMN_DESCRIPTION))
             val deadline = cursor.getString(cursor.getColumnIndex(TaskDatabaseHelper.COLUMN_DEADLINE))
-            tasks.add(TaskItem(title, description, deadline))
+            tasks.add(TaskItem(id, title, description, deadline)) // Pass ID to TaskItem constructor
         }
 
         cursor.close()
@@ -65,7 +69,5 @@ class ShowTasksActivity : AppCompatActivity() {
 
         return tasks
     }
-
-
 }
 

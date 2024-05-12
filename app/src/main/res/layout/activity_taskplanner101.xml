@@ -14,7 +14,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Task Title"
+        android:text="@string/task_title"
         android:textStyle="bold"
         android:textSize="16sp"
         android:layout_marginBottom="8dp"/>
@@ -23,14 +23,14 @@
         android:id="@+id/editTextTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter task title"
+        android:hint="@string/enter_task_title"
         android:inputType="text"/>
 
     <!-- Task Description -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Task Description"
+        android:text="@string/task_description"
         android:textStyle="bold"
         android:textSize="16sp"
         android:layout_marginTop="16dp"
@@ -40,7 +40,7 @@
         android:id="@+id/editTextDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter task description"
+        android:hint="@string/enter_task_description"
         android:inputType="textMultiLine"
         android:minLines="3"
         android:gravity="top"/>
@@ -49,7 +49,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Task Deadline"
+        android:text="@string/task_deadline"
         android:textStyle="bold"
         android:textSize="16sp"
         android:layout_marginTop="16dp"
@@ -65,7 +65,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:hint="Select task deadline"
+            android:hint="@string/select_task_deadline"
             android:inputType="none"
             android:clickable="false"
             android:focusable="false"/>
@@ -74,9 +74,9 @@
             android:id="@+id/buttonDatePicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pick Date"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#007bff"/>
+            android:text="@string/pick_date"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/accent_color"/>
     </LinearLayout>
 
     <!-- Add Task Button -->
@@ -84,19 +84,19 @@
         android:id="@+id/buttonAddTask"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Task"
+        android:text="@string/add_task_btn"
         android:layout_marginTop="24dp"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#007bff"/>
+        android:textColor="@color/white"
+        android:backgroundTint="@color/primary_color"/>
 
     <!-- Show Tasks Button -->
     <Button
         android:id="@+id/buttonShowTasks"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Show Tasks"
+        android:text="@string/show_tasks"
         android:layout_marginTop="8dp"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#28a745"/>
+        android:textColor="@color/white"
+        android:backgroundTint="@color/primary_color"/>
 
 </LinearLayout>

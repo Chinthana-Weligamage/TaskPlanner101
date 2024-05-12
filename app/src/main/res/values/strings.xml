@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">TaskPlanner101</string>
     <string name="add_task">+</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
+    <string name="enter_new_description">Enter new description</string>
+    <string name="pick_date">Pick Date</string>
+    <string name="select_task_deadline">Select task deadline</string>
+    <string name="task_deadline">Task Deadline</string>
+    <string name="enter_task_description">Enter task description</string>
+    <string name="task_description">Task Description</string>
+    <string name="enter_task_title">Enter task title</string>
+    <string name="task_title">Task Title</string>
+    <string name="add_task_btn">Add Task</string>
+    <string name="show_tasks">Show Tasks</string>
 </resources>

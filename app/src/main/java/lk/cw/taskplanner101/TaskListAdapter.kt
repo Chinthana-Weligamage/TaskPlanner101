@@ -2,20 +2,23 @@ package lk.cw.taskplanner101
 // TaskListAdapter.kt
 
 import android.app.AlertDialog
+import android.content.ContentValues
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
-import lk.cw.taskplanner101.R
+import android.widget.Toast
 
 class TaskListAdapter(
     private val context: Context,
     private val dbHelper: TaskDatabaseHelper,
-    private val tasks: MutableList<TaskItem>
+    private var tasks: MutableList<TaskItem>
 ) : BaseAdapter() {
+
 
     override fun getCount(): Int {
         return tasks.size
@@ -48,10 +51,30 @@ class TaskListAdapter(
         viewHolder.textViewDeadline.text = task.deadline
 
         viewHolder.buttonUpdate.setOnClickListener {
-            // Handle update button click
-            // You can pass the task ID or any other identifier to the update activity
-            // For example: startActivity(Intent(context, UpdateTaskActivity::class.java).putExtra("taskId", task.id))
+            val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_update_description, null)
+            val editTextDescription = dialogView.findViewById<EditText>(R.id.editTextDescription)
+            editTextDescription.setText(task.description)
+
+            val alertDialogBuilder = AlertDialog.Builder(context)
+                .setView(dialogView)
+                .setTitle("Update Description")
+                .setPositiveButton("Save") { dialog, _ ->
+                    // Save updated description
+                    val newDescription = editTextDescription.text.toString()
+                    // Implement the logic to update the description in the database
+                    // For demonstration, let's just update the task object
+                    task.description = newDescription
+                    notifyDataSetChanged() // Update the list view
+                    dialog.dismiss()
+                }
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .create()
+
+            alertDialogBuilder.show()
         }
+
 
         viewHolder.buttonDelete.setOnClickListener {
             showDeleteConfirmationDialog(task)
@@ -59,6 +82,8 @@ class TaskListAdapter(
 
         return view
     }
+
+
 
     private fun showDeleteConfirmationDialog(task: TaskItem) {
         val alertDialogBuilder = AlertDialog.Builder(context)
@@ -84,6 +109,25 @@ class TaskListAdapter(
         alertDialog.show()
     }
 
+    // Function to update task description in the database
+    private fun updateTaskDescriptionInDatabase(taskId: Long, newDescription: String): Int {
+        return dbHelper.updateTaskDescription(taskId, newDescription)
+    }
+
+    // Example usage when updating task description
+    private fun updateTaskDescription(taskId: Long, newDescription: String) {
+        // Call the function to update the task description in the database
+        val count = updateTaskDescriptionInDatabase(taskId, newDescription)
+        if (count > 0) {
+            showToast("Task description updated successfully!")
+            // Optionally, you can refresh the UI or navigate back to the task list
+        } else {
+            showToast("Failed to update task description. Please try again.")
+        }
+    }
+
+
+
     private class ViewHolder(view: View) {
         val textViewTitle: TextView = view.findViewById(R.id.textViewTitle)
         val textViewDescription: TextView = view.findViewById(R.id.textViewDescription)
@@ -91,5 +135,10 @@ class TaskListAdapter(
         val buttonUpdate: Button = view.findViewById(R.id.buttonUpdate)
         val buttonDelete: Button = view.findViewById(R.id.buttonDelete)
     }
+
+    private fun showToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
 }
 
