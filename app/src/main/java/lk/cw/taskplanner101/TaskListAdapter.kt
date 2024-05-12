@@ -1,7 +1,7 @@
 package lk.cw.taskplanner101
-
 // TaskListAdapter.kt
 
+import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +9,13 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Button
 import android.widget.TextView
+import lk.cw.taskplanner101.R
 
-class TaskListAdapter(private val context: Context, private val tasks: List<TaskItem>) : BaseAdapter() {
+class TaskListAdapter(
+    private val context: Context,
+    private val dbHelper: TaskDatabaseHelper,
+    private val tasks: MutableList<TaskItem>
+) : BaseAdapter() {
 
     override fun getCount(): Int {
         return tasks.size
@@ -49,12 +54,34 @@ class TaskListAdapter(private val context: Context, private val tasks: List<Task
         }
 
         viewHolder.buttonDelete.setOnClickListener {
-            // Handle delete button click
-            // You can show a confirmation dialog before deleting the task
-            // For example: showDeleteConfirmationDialog(task.id)
+            showDeleteConfirmationDialog(task)
         }
 
         return view
+    }
+
+    private fun showDeleteConfirmationDialog(task: TaskItem) {
+        val alertDialogBuilder = AlertDialog.Builder(context)
+        alertDialogBuilder.setTitle("Confirm Deletion")
+        alertDialogBuilder.setMessage("Are you sure you want to delete this task?")
+        alertDialogBuilder.setPositiveButton("Yes") { dialog, _ ->
+            val deletedRows = dbHelper.deleteTask(task.id)
+            if (deletedRows > 0) {
+                // Task deleted successfully
+                tasks.remove(task)
+                notifyDataSetChanged()
+                showToast("Task deleted successfully!")
+            } else {
+                // Failed to delete task
+                showToast("Failed to delete task. Please try again.")
+            }
+            dialog.dismiss()
+        }
+        alertDialogBuilder.setNegativeButton("No") { dialog, _ ->
+            dialog.dismiss()
+        }
+        val alertDialog = alertDialogBuilder.create()
+        alertDialog.show()
     }
 
     private class ViewHolder(view: View) {
@@ -65,3 +92,4 @@ class TaskListAdapter(private val context: Context, private val tasks: List<Task
         val buttonDelete: Button = view.findViewById(R.id.buttonDelete)
     }
 }
+

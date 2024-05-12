@@ -1,9 +1,12 @@
 package lk.cw.taskplanner101
 // ShowTasksActivity.kt
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ShowTasksActivity : AppCompatActivity() {
 
@@ -21,17 +24,48 @@ class ShowTasksActivity : AppCompatActivity() {
         // Display tasks in the ListView using custom adapter
         val adapter = TaskListAdapter(this, tasks)
         listViewTasks.adapter = adapter
+
+        val fabAddTask: FloatingActionButton = findViewById(R.id.fabAddTask)
+        fabAddTask.setOnClickListener {
+            // Start the AddTaskActivity when the FAB is clicked
+            val intent = Intent(this, TaskPlanner101::class.java)
+            startActivity(intent)
+        }
     }
 
+    @SuppressLint("Range")
     private fun retrieveTasksFromDatabase(): List<TaskItem> {
-        // Implement this method to retrieve tasks from the database
-        // and return a list of TaskItem objects
-        // For demonstration purposes, returning a dummy list
-        return listOf(
-            TaskItem("Task 1", "Description 1", "2024-05-15"),
-            TaskItem("Task 2", "Description 2", "2024-05-16"),
-            TaskItem("Task 3", "Description 3", "2024-05-17")
+        val dbHelper = TaskDatabaseHelper(this)
+        val db = dbHelper.readableDatabase
+        val tasks = mutableListOf<TaskItem>()
+
+        val cursor = db.query(
+            TaskDatabaseHelper.TABLE_NAME,
+            arrayOf(
+                TaskDatabaseHelper.COLUMN_TITLE,
+                TaskDatabaseHelper.COLUMN_DESCRIPTION,
+                TaskDatabaseHelper.COLUMN_DEADLINE
+            ),
+            null,
+            null,
+            null,
+            null,
+            null
         )
+
+        while (cursor.moveToNext()) {
+            val title = cursor.getString(cursor.getColumnIndex(TaskDatabaseHelper.COLUMN_TITLE))
+            val description = cursor.getString(cursor.getColumnIndex(TaskDatabaseHelper.COLUMN_DESCRIPTION))
+            val deadline = cursor.getString(cursor.getColumnIndex(TaskDatabaseHelper.COLUMN_DEADLINE))
+            tasks.add(TaskItem(title, description, deadline))
+        }
+
+        cursor.close()
+        db.close()
+
+        return tasks
     }
+
+
 }
 

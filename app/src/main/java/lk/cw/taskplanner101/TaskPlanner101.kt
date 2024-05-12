@@ -1,10 +1,13 @@
 package lk.cw.taskplanner101
+// TaskPlanner101.kt
+
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import java.util.*
 
@@ -16,6 +19,7 @@ class TaskPlanner101 : AppCompatActivity() {
     private lateinit var buttonAddTask: Button
     private lateinit var buttonShowTasks: Button
     private lateinit var buttonDatePicker: Button
+    private lateinit var dbHelper: TaskDatabaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,9 +32,10 @@ class TaskPlanner101 : AppCompatActivity() {
         buttonShowTasks = findViewById(R.id.buttonShowTasks)
         buttonDatePicker = findViewById(R.id.buttonDatePicker)
 
+        dbHelper = TaskDatabaseHelper(this)
+
         buttonAddTask.setOnClickListener {
-            // Handle Add Task button click
-            // ...
+            addTaskToDatabase()
         }
 
         // Add click listener to navigate to ShowTasksActivity
@@ -44,6 +49,35 @@ class TaskPlanner101 : AppCompatActivity() {
             showDatePicker()
         }
     }
+
+    private fun addTaskToDatabase() {
+        val title = editTextTitle.text.toString()
+        val description = editTextDescription.text.toString()
+        val deadline = editTextDeadline.text.toString()
+
+        if (title.isNotEmpty() && description.isNotEmpty() && deadline.isNotEmpty()) {
+            val id = dbHelper.insertTask(title, description, deadline)
+            if (id != -1L) {
+                // Task added successfully
+                showToast("Task added successfully!")
+                // Clear input fields
+                editTextTitle.setText("")
+                editTextDescription.setText("")
+                editTextDeadline.setText("")
+            } else {
+                // Failed to add task
+                showToast("Failed to add task. Please try again.")
+            }
+        } else {
+            // All fields are required
+            showToast("All fields are required.")
+        }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
 
     private fun showDatePicker() {
         val calendar = Calendar.getInstance()
